@@ -5,7 +5,7 @@ import { Location } from './location.entity';
 @Entity({
   schema: 'localizations',
 })
-export class City {
+export class CityEntity {
   @PrimaryGeneratedColumn()
     id: number;
 
