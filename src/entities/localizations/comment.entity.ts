@@ -10,7 +10,7 @@ import { User } from '../users/user.entity';
 @Entity({
   schema: 'localizations',
 })
-export class Comment {
+export class CommentEntity {
 
   @PrimaryGeneratedColumn()
     id: number;
@@ -25,12 +25,12 @@ export class Comment {
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
   })
-    createdAt: Date;
+    created_at: Date;
 
   @ManyToOne(() => Location, location => location.comment)
-    location: Location | number;
+    location: number;
 
   @ManyToOne(() => User, user => user.comment)
-    user: User | number;
+    user_id: number;
 
 }

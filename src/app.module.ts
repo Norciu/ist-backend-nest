@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { TechnologyModule } from './technology/technology.module';
 import { StreetModule } from './street/street.module';
+import { CommentModule } from './comment/comment.module';
 import DatabaseLogger from './utils/database_logger';
 
 @Module({
@@ -28,6 +29,7 @@ import DatabaseLogger from './utils/database_logger';
     UsersModule,
     TechnologyModule,
     StreetModule,
+    CommentModule,
   ],
 })
 export class AppModule {}

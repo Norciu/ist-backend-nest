@@ -18,7 +18,7 @@ module.exports = {
   'rules': {
     'semi': ['error', 'always'],
     'space-before-blocks': ['error', 'always'],
-    'quotes': ['error', 'single'],
+    'quotes': ['error', 'single', { avoidEscape: true }],
     'comma-dangle': ['error', 'always-multiline'],
     'object-curly-spacing': ['error', 'always'],
     'keyword-spacing': ['error', { before: true }],

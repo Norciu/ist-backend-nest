@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Street } from 'src/entities/localizations/street.entity';
 import { InsertStreetDto } from './street.dto';
+import { setEntityProperty } from 'src/utils/entity_serializer';
 
 @Injectable()
 export class StreetService {
@@ -11,11 +12,7 @@ export class StreetService {
   ) {}
 
   public async insertStreet(data: InsertStreetDto): Promise<Street> {
-    const { cityId, streetName, ulic } = data;
-    const street: Street = new Street();
-    street.city = cityId;
-    street.streetName = streetName;
-    street.ulic = ulic;
+    const street: Street = setEntityProperty(new Street(), data);
     return this.street_repo.save(street);
   }
 
