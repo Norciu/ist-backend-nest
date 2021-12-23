@@ -12,31 +12,31 @@ export class LocationOwner {
     type: 'smallint',
     default: null,
   })
-    clientType: number;
+    client_type: number;
 
   @Column({
     length: 50,
     default: null,
   })
-    firstName: string;
+    first_name: string;
 
   @Column({
     length: 50,
     default: null,
   })
-    lastName: string;
+    last_name: string;
 
   @Column({
     length: 100,
     default: null,
   })
-    companyName: string;
+    company_name: string;
 
   @Column({
     length: 20,
     default: null,
   })
-    phoneNo: string;
+    phone_no: string;
 
   @Column({
     length: 100,
@@ -45,11 +45,11 @@ export class LocationOwner {
     email: string;
 
   @CreateDateColumn({ type: 'timestamp' })
-    createdAt: number;
+    created_at: Date;
 
   @CreateDateColumn({ type: 'timestamp' })
-    updatedAt: number;
+    updated_at: Date;
 
-  @OneToMany(() => Location, location => location.location_owner)
-    locationOwner: Location[];
+  @OneToMany(() => Location, ({ location_owner_id }) => location_owner_id)
+    location_owner: Location[];
 }

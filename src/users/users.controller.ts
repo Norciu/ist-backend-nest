@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { request } from 'http';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { User } from 'src/auth/jwt.strategy';
-import { LoginBodyDto } from './users.dto';
+import { CreateUserDto, LoginBodyDto } from './users.dto';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -33,8 +34,11 @@ export class UsersController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('test')
-  test(@User() usr, @Res() res) {
-    res.code(200).send(usr);
+  @Post('createUser')
+  async createUser(@User() user, @Body() body: CreateUserDto, @Res() res) {
+
+    const result = await this.userService.createUser(body);
+
+    return res.code(200).send({ success: true });
   }
 }

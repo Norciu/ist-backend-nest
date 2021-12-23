@@ -8,7 +8,9 @@ import {
 import { City } from './city.entity';
 import { Location } from './location.entity';
 
-@Entity()
+@Entity({
+  schema: 'localizations',
+})
 export class Street {
   @PrimaryGeneratedColumn()
     id: number;
@@ -25,16 +27,17 @@ export class Street {
     ulic: string;
 
   @CreateDateColumn({ type: 'timestamp' })
-    createdAt: number;
+    created_at: number;
 
   @CreateDateColumn({ type: 'timestamp' })
-    updatedAt: number;
+    updated_at: number;
 
-  @ManyToOne(() => City, (city) => city.streets, {
+  @ManyToOne(() => City, ({ streets }) => streets, {
     nullable: false,
+    cascade: true,
   })
-    city: number;
+    city_id: City | number;
 
-  @OneToMany(() => Location, (location) => location.city)
+  @OneToMany(() => Location, ({ city_id }) => city_id)
     locations: Location[];
 }

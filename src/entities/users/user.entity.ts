@@ -1,7 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from 'typeorm';
-import { Comment } from '../localizations/comment.entity';
+import { Comments } from '../localizations/comment.entity';
 
-@Entity()
+@Entity({
+  schema: 'account',
+})
 export class User {
   @PrimaryGeneratedColumn()
     id: number;
@@ -58,6 +60,6 @@ export class User {
   @CreateDateColumn({ type: 'timestamp' })
     updatedAt: number;
 
-  @OneToMany(() => Comment, comment => comment.user)
-    comment: Comment[];
+  @OneToMany(() => Comments, ({ user_id }) => user_id)
+    comments: Comment[];
 }

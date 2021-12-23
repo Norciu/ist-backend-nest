@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Put, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Put, Query, Res, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { AddCityDto } from './city.dto';
 import { CityService } from './city.service';
@@ -17,8 +17,9 @@ export class CityController {
   }
 
   @Get('getAll')
-  async getAll(@Res() res) {
-    const result = await this.cityService.getAll();
-    return res.status(200).send({ success: true, result });
+  async getAll(@Query() query, @Res() res) {
+    const { limit = 10, offset = 0 } = query;
+    const [result, count] = await this.cityService.getAll(limit, offset);
+    return res.status(200).send({ success: true, result, count });
   }
 }

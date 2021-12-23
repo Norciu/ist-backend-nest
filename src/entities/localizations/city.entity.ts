@@ -5,7 +5,7 @@ import { Location } from './location.entity';
 @Entity({
   schema: 'localizations',
 })
-export class CityEntity {
+export class City {
   @PrimaryGeneratedColumn()
     id: number;
 
@@ -32,9 +32,9 @@ export class CityEntity {
   @CreateDateColumn({ type: 'timestamp' })
     updatedAt: number;
 
-  @OneToMany(() => Street, (street) => street.city, { cascade: true })
+  @OneToMany(() => Street, ({ city_id }) => city_id)
     streets: Street[];
 
-  @OneToMany(() => Location, (location) => location.street, { cascade: true })
+  @OneToMany(() => Location, ({ street_id }) => street_id, { cascade: true })
     locations: Location[];
 }

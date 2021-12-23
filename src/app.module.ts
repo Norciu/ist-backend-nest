@@ -8,6 +8,8 @@ import { TechnologyModule } from './technology/technology.module';
 import { StreetModule } from './street/street.module';
 import { CommentModule } from './comment/comment.module';
 import { CityModule } from './city/city.module';
+import { LocationsModule } from './locations/locations.module';
+import { GeoapifyModule } from './geoapify/geoapify.module';
 import DatabaseLogger from './utils/database_logger';
 
 @Module({
@@ -23,7 +25,7 @@ import DatabaseLogger from './utils/database_logger';
       entities: [__dirname + '/entities/**/*.entity.js'],
       synchronize: Boolean(process.env.DB_SYNC),
       namingStrategy: new SnakeNamingStrategy(),
-      logging: Boolean(process.env.PRODUCTION) === false,
+      logging: Boolean(process.env.DEBUG),
       logger: new DatabaseLogger(),
     }),
     AuthModule,
@@ -32,6 +34,8 @@ import DatabaseLogger from './utils/database_logger';
     StreetModule,
     CommentModule,
     CityModule,
+    LocationsModule,
+    GeoapifyModule,
   ],
 })
 export class AppModule {}

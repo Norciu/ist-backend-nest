@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { setEntityProperty } from 'src/utils/entity_serializer';
-import { CommentEntity } from 'src/entities/localizations/comment.entity';
+import { Comments } from 'src/entities/localizations/comment.entity';
 import { Repository } from 'typeorm';
 import { AddCommentDto } from './comment.dto';
 
 @Injectable()
 export class CommentService {
   constructor(
-    @InjectRepository(CommentEntity) private readonly comment_repo: Repository<CommentEntity>,
+    @InjectRepository(Comments) private readonly comment_repo: Repository<Comments>,
   ) {}
 
   async addComment(comment: AddCommentDto) {
-    const com = setEntityProperty(new CommentEntity(), comment);
+    const com = setEntityProperty(new Comments(), comment);
     return this.comment_repo.save(com);
   }
 

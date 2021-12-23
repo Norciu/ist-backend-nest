@@ -1,25 +1,27 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Location } from './location.entity';
 
-@Entity()
+@Entity({
+  schema: 'localizations',
+})
 export class Technology {
   @PrimaryGeneratedColumn()
-  id!: number;
+    id!: number;
 
   @Column({
     name: 'technology_name',
     nullable: false,
     unique: true,
   })
-  technologyName!: string;
+    technologyName!: string;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
-  createdAt!: number;
+    createdAt!: number;
 
   @CreateDateColumn({ name: 'updated_at', type: 'timestamp' })
-  updatedAt!: number;
+    updatedAt!: number;
 
-  @OneToMany(type => Location, location => location.availableTechnology)
-  location!: Location
+  @OneToMany(type => Location, ({ available_technology_id }) => available_technology_id)
+    location!: Location;
 
 }

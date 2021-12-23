@@ -26,7 +26,7 @@ module.exports = {
     'semi-spacing': ['error', { before: false, after: true }],
     'linebreak-style': ['error', 'unix'],
     'no-return-await': ['error'],
-    'indent': ['error', 2],
+    // 'indent': ['error', 2],
     'space-unary-ops': ['error', { 'words': true, 'nonwords': false }],
     'no-multi-spaces': ['error'],
     'block-spacing': ['error'],

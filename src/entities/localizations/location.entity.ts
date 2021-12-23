@@ -3,7 +3,8 @@ import { Technology } from './technology.entity';
 import { Street } from './street.entity';
 import { City } from './city.entity';
 import { LocationOwner } from './location_owner.entity';
-import { Comment } from './comment.entity';
+import { Comments } from './comment.entity';
+import { Geocoded } from './geocoded.entity';
 
 @Entity({
   schema: 'localizations',
@@ -35,24 +36,28 @@ export class Location {
   @CreateDateColumn({ type: 'timestamp' })
     updatedAt: number;
 
-  @ManyToOne(() => LocationOwner, locationOwner => locationOwner.locationOwner)
-    location_owner: LocationOwner;
+  @ManyToOne(() => Geocoded, ({ locations }) => locations)
+    geocoded: number | Geocoded;
 
-  @ManyToOne(() => Street, (street) => street.locations, {
+  @ManyToOne(() => LocationOwner, ({ location_owner }) => location_owner)
+    location_owner_id: number | LocationOwner;
+
+  @ManyToOne(() => Street, ({ locations }) => locations, {
     nullable: false,
   })
-    street: Street;
+    street_id: number | Street;
 
-  @ManyToOne(() => City, (city) => city.locations, {
+  @ManyToOne(() => City, ({ locations }) => locations, {
     nullable: false,
   })
-    city: City;
+    city_id: number | City;
 
-  @ManyToOne(() => Technology, (technology) => technology.location, {
+  @ManyToOne(() => Technology, ({ location }) => location, {
     nullable: false,
   })
-    availableTechnology: Technology;
+    available_technology_id: number | Technology;
 
-  @OneToMany(() => Comment, ({ location }) => location)
+  @OneToMany(() => Comments, ({ location_id }) => location_id)
     comment: Comment[];
+
 }
