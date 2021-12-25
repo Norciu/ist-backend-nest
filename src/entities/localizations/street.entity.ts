@@ -16,7 +16,7 @@ export class Street {
     id: number;
 
   @Column({
-    length: 50,
+    length: 100,
   })
     streetName: string;
 

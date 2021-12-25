@@ -16,12 +16,15 @@ export class StreetService {
     return this.street_repo.save(street);
   }
 
-  public async getAvailableStreets(): Promise<Street[]> {
-    return this.street_repo.find({ relations: ['city'] });
+  public async getAvailableCityWithStreets(limit: number, offset: number, id?: number): Promise<[Street[], number]> {
+    if (id) {
+      this.street_repo.findAndCount({ relations: ['city_id'], skip: offset, take: limit, where: { city_id: id } });
+    }
+    return this.street_repo.findAndCount({ relations: ['city_id'], skip: offset, take: limit });
   }
 
-  async getStreetsForCity(cityId: number): Promise<Street[]> {
-    return this.street_repo.find({ where: { city: cityId } });
+  async getStreetsForCity(cityId: number): Promise<[Street[], number]> {
+    return this.street_repo.findAndCount({ relations: ['city_id'], where: { city_id: cityId } });
   }
 
   async getStreetsByCitySimc(citySimc: string) {

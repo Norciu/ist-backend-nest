@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Put, Query, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Put, Query, Res, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { AddCityDto } from './city.dto';
 import { CityService } from './city.service';
@@ -21,5 +21,11 @@ export class CityController {
     const { limit = 10, offset = 0 } = query;
     const [result, count] = await this.cityService.getAll(limit, offset);
     return res.status(200).send({ success: true, result, count });
+  }
+
+  @Get('find/:param')
+  async searchCity(@Param('param') param: string, @Res() res) {
+    const [result, total] = await this.cityService.searchCity(param);
+    return res.status(200).send({ success: true, result, total });
   }
 }

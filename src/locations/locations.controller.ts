@@ -1,6 +1,8 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { LocationsService } from './locations.service';
 
+@UseGuards(JwtAuthGuard)
 @Controller('locations')
 export class LocationsController {
 
