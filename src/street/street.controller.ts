@@ -33,4 +33,10 @@ export class StreetController {
     const [result, total] = await this.streetService.getStreetsForCity(id);
     return res.status(200).send({ success: true, result, total });
   }
+
+  @Get('findStreet/:cityId/:streetName')
+  async filterStreetsForCity(@Param('cityId') cityId: number, @Param('streetName') streetName: string) {
+    const [result, total] = await this.streetService.filterStreetsForCity(cityId, streetName);
+    return { success: true, result, total };
+  }
 }

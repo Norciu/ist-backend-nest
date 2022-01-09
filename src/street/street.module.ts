@@ -5,8 +5,11 @@ import { StreetController } from './street.controller';
 import { StreetService } from './street.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Street])],
+  imports: [
+    TypeOrmModule.forFeature([Street])
+  ],
   controllers: [StreetController],
   providers: [StreetService],
+  exports: [StreetService],
 })
 export class StreetModule {}

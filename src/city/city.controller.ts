@@ -12,15 +12,16 @@ export class CityController {
 
   @Put('insert')
   async insertCity(@Body() body: AddCityDto, @Res() res) {
-    const result = await this.cityService.insertCity(body);
-    return res.status(200).send({ success: true, result });
+    const inserted = await this.cityService.insertCity(body);
+    const [result, total] = await this.cityService.getAll(10, 0);
+    return res.status(200).send({ success: true, inserted, result, total });
   }
 
   @Get('getAll')
   async getAll(@Query() query, @Res() res) {
     const { limit = 10, offset = 0 } = query;
-    const [result, count] = await this.cityService.getAll(limit, offset);
-    return res.status(200).send({ success: true, result, count });
+    const [result, total] = await this.cityService.getAll(limit, offset);
+    return res.status(200).send({ success: true, result, total });
   }
 
   @Get('find/:param')

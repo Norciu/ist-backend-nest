@@ -1,27 +1,44 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Connection, Repository } from 'typeorm';
 import { Location } from 'src/entities/localizations/location.entity';
+import { setEntityProperty } from 'src/utils/entity_serializer';
+import { camelToSnake } from 'src/utils/string_converter';
 import { LocationOwner } from 'src/entities/localizations/location_owner.entity';
-import { Street } from 'src/entities/localizations/street.entity';
-import { City } from 'src/entities/localizations/city.entity';
-import { Technology } from 'src/entities/localizations/technology.entity';
 
 @Injectable()
 export class LocationsService {
-  constructor(@InjectRepository(Location) private readonly location_repo: Repository<Location>) {}
+  constructor(
+    @InjectRepository(Location) private readonly location_repo: Repository<Location>,
+    private connection: Connection,
+  ) {}
 
-  async getLocations() {
-    const result = await this.location_repo.createQueryBuilder()
-      .select('location.id', 'id')
-      .from(Location, 'location')
-      .leftJoinAndSelect(LocationOwner, 'location_owner', 'location_owner.id = location.location_owner_id')
-      .leftJoinAndSelect(Street, 'str', 'str.id = location.street_id')
-      .leftJoinAndSelect(City, 'cty', 'cty.id = str.city_id')
-      .leftJoinAndSelect(Technology, 'tech', 'tech.id = location.available_technology_id')
-      .getMany();
-    const count = await this.location_repo.count();
+  async getLocations(limit: number, offset: number): Promise<[Location[], number]> {
+    return this.location_repo.findAndCount({
+      relations: ['location_owner_id', 'street_id', 'city_id', 'available_technology_id'],
+      skip: offset,
+      take: limit,
+    });
+  }
 
-    return { result, count };
+  async insertLocation(locationData) {
+    const location = setEntityProperty(new Location(), locationData);
+    return this.location_repo.save(location);
+  }
+
+  async insertLocationOwner(ownerData) {
+    const locationOwner = setEntityProperty(new LocationOwner(), ownerData);
+    return this.location_repo.save(locationOwner);
+  }
+
+  async insertLocationWithOwner(locationData) {
+    const locationOwner = setEntityProperty(new LocationOwner(), camelToSnake(locationData.clientInfo));
+    const location = setEntityProperty(new Location(), locationData);
+    location.available_technology_id = locationData.technology_id;
+    return this.connection.transaction(async tx => {
+      const { id } = await tx.save(locationOwner);
+      location.location_owner_id = id;
+      await tx.save(location);
+    });
   }
 }

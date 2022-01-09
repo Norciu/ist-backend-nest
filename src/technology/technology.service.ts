@@ -15,8 +15,8 @@ export class TechnologyService {
     return this.technology_repo.save(tech);
   }
 
-  public async getAvailable(): Promise<Technology[]> {
-    return this.technology_repo.find({ select: ['technologyName', 'createdAt', 'updatedAt'] });
+  public async getAvailable(limit: number, offset: number): Promise<[Technology[], number]> {
+    return this.technology_repo.findAndCount({ take: limit, skip: offset });
   }
 
   public async findTechnology(techName: string): Promise<Technology | undefined> {
