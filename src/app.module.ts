@@ -10,6 +10,7 @@ import { CommentModule } from './comment/comment.module';
 import { CityModule } from './city/city.module';
 import { LocationsModule } from './locations/locations.module';
 import { GeoapifyModule } from './geoapify/geoapify.module';
+import { DocsModule } from './docs/docs.module';
 import DatabaseLogger from './utils/database_logger';
 
 @Module({
@@ -36,6 +37,7 @@ import DatabaseLogger from './utils/database_logger';
     CityModule,
     LocationsModule,
     GeoapifyModule,
+    DocsModule,
   ],
 })
 export class AppModule {}

@@ -51,4 +51,10 @@ export class LocationsController {
 
     return { success: true };
   }
+
+  @Get('getAllMarkers')
+  async getLocationMarkers() {
+    const coordinates = await this.locationsService.getLocationMarkers();
+    return { success: true, coordinates };
+  }
 }

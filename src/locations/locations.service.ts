@@ -5,6 +5,7 @@ import { Location } from 'src/entities/localizations/location.entity';
 import { setEntityProperty } from 'src/utils/entity_serializer';
 import { camelToSnake } from 'src/utils/string_converter';
 import { LocationOwner } from 'src/entities/localizations/location_owner.entity';
+import { Geocoded } from 'src/entities/localizations/geocoded.entity';
 
 @Injectable()
 export class LocationsService {
@@ -23,6 +24,7 @@ export class LocationsService {
 
   async insertLocation(locationData) {
     const location = setEntityProperty(new Location(), locationData);
+    location.available_technology_id = locationData.technology_id;
     return this.location_repo.save(location);
   }
 
@@ -40,5 +42,12 @@ export class LocationsService {
       location.location_owner_id = id;
       await tx.save(location);
     });
+  }
+
+  async getLocationMarkers() {
+    return this.location_repo.createQueryBuilder('location')
+      .select('ARRAY[geocoded.lon, geocoded.lat]', 'coordinates')
+      .leftJoin(Geocoded, 'geocoded', 'geocoded.id = location.geocoded_id')
+      .getRawMany();
   }
 }
