@@ -30,6 +30,13 @@ export class Location {
   })
     plotNo: string;
 
+  // If availabe_technology_id is null, then available type is set to 0, 1 to available, 2 to already connected
+  @Column({
+    type: 'smallint',
+    nullable: true,
+  })
+  available_type: number;
+
   @CreateDateColumn({ type: 'timestamp' })
     createdAt: number;
 

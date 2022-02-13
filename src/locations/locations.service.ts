@@ -50,4 +50,12 @@ export class LocationsService {
       .leftJoin(Geocoded, 'geocoded', 'geocoded.id = location.geocoded_id')
       .getRawMany();
   }
+
+  async getLocationLonLat(id: number) {
+    return this.location_repo.createQueryBuilder('location')
+      .select('ARRAY[geocoded.lon, geocoded.lat]', 'result')
+      .leftJoin(Geocoded, 'geocoded', 'geocoded.id = location.geocoded_id')
+      .where('location.id = :id', { id })
+      .getRawOne();
+  }
 }

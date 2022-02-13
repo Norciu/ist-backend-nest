@@ -6,10 +6,6 @@ export class AddCommentDto {
   @IsNotEmpty()
     location_id: number;
 
-  @IsNumber()
-  @IsNotEmpty()
-    user_id: number;
-
   @IsString()
   @IsNotEmpty()
     description: string;

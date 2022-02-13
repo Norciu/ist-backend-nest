@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Put, UseGuards, Query, Param } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CityService } from 'src/city/city.service';
 import { GeoapifyService } from 'src/geoapify/geoapify.service';
@@ -18,7 +18,7 @@ export class LocationsController {
   ) {}
 
   @Get('getAll')
-  async getLocations(@Param() { limit = 10, offset = 0 }) {
+  async getLocations(@Query() { limit = 10, offset = 0 }) {
     const [result, total] = await this.locationsService.getLocations(limit, offset);
     return { success: true, result, total };
   }
@@ -56,5 +56,11 @@ export class LocationsController {
   async getLocationMarkers() {
     const coordinates = await this.locationsService.getLocationMarkers();
     return { success: true, coordinates };
+  }
+
+  @Get('getLocationLonLat/:location_id')
+  async getLocationLonLat(@Param('location_id') location_id) {
+    const { result } = await this.locationsService.getLocationLonLat(location_id);
+    return { success: true, result };
   }
 }
