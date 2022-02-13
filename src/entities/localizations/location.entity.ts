@@ -53,7 +53,7 @@ export class Location {
     city_id: number | City;
 
   @ManyToOne(() => Technology, ({ location }) => location, {
-    nullable: false,
+    nullable: true,
   })
     available_technology_id: number | Technology;
 
