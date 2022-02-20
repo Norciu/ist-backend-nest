@@ -12,7 +12,10 @@ import { LocationsModule } from './locations/locations.module';
 import { GeoapifyModule } from './geoapify/geoapify.module';
 import { DocsModule } from './docs/docs.module';
 import { StatisticModule } from './statistic/statistic.module';
+import { NestPgpromiseModule } from 'nestjs-pgpromise';
 import DatabaseLogger from './utils/database_logger';
+
+const pgLogger = new DatabaseLogger();
 
 @Module({
   imports: [
@@ -29,6 +32,18 @@ import DatabaseLogger from './utils/database_logger';
       namingStrategy: new SnakeNamingStrategy(),
       logging: Boolean(process.env.DEBUG),
       logger: new DatabaseLogger(),
+    }),
+    NestPgpromiseModule.register({
+      connection: {
+        host: 'localhost',
+        port: 5432,
+        database: 'ist',
+        user: 'ist',
+        password: 'ist',
+      },
+      initOptions: {
+        query: (e) => pgLogger.logQuery(e.query),
+      },
     }),
     AuthModule,
     UsersModule,
