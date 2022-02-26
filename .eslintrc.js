@@ -41,4 +41,5 @@ module.exports = {
     }],
     'consistent-return': ['error'],
   },
+  'ignorePatterns': ['dist', 'node_modules', 'test'],
 };
